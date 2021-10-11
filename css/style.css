@@ -1,0 +1,115 @@
+*,
+*::before,
+*::after {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  box-sizing: border-box;
+}
+/* :focus,
+:active {
+  outline: none;
+}
+a:focus,
+a:active {
+  outline: none;
+} */
+aside,
+nav,
+footer,
+header,
+section {
+  display: block;
+}
+html,
+body {
+  height: 100%;
+  line-height: 1;
+  font-size: 14px;
+  color: #252b42;
+  font-weight: 500;
+  background-color: #fafafa;
+  font-family: 'Roboto', sans-serif;
+}
+/* input::-ms-clear {
+  display: none;
+} */
+button {
+  cursor: pointer;
+}
+/* button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+} */
+a,
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+img {
+  vertical-align: top;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+.wrapper {
+  min-height: 100%;
+  overflow: hidden;
+}
+._container {
+  max-width: 1046px;
+  margin: 0px auto;
+  padding: 0px 15px;
+}
+.main__container {
+}
+.main__title {
+  margin-top: 20px;
+  font-size: 32px;
+}
+.btn {
+  color: #42b983;
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid #42b983;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 0.5rem 1.5rem;
+  font-weight: 700;
+  outline: none;
+  background: #fff;
+  transition: all 0.22s;
+  cursor: pointer;
+  margin: 1rem 1rem 1rem 0;
+}
+.btn.primary {
+  background: #42b983;
+  color: #fff;
+}
+.btn:active {
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+.btn:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+input[type='file'] {
+  display: none;
+}
+.form__title {
+  font-size: 20px;
+  text-align: center;
+}
