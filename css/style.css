@@ -106,10 +106,31 @@ h6 {
   cursor: pointer;
   opacity: 0.8;
 }
-input[type='file'] {
+
+.input__upload {
   display: none;
 }
 .form__title {
   font-size: 20px;
   text-align: center;
+}
+form {
+  margin: 0 auto;
+  width: 400px;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+}
+input,
+textarea {
+  width: auto;
+  box-sizing: border-box;
+  border: 1px solid #999;
+}
+label {
+  position: relative;
+  margin-right: 15px;
+}
+p {
+  margin: 10px;
 }

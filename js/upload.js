@@ -31,26 +31,68 @@ export function upload(selector, options = {}) {
     const form = document.createElement('form');
     form.classList.add('form');
     container.insertAdjacentElement('afterbegin', form);
+
     if (data.name) {
-      const title = document.createElement('h2');
+      const title = document.createElement('legend');
       title.classList.add('form__title');
       title.textContent = data.name;
-      form.insertAdjacentElement('afterbegin', title);
+      form.insertAdjacentElement('beforeend', title);
     }
     if (data.fields && data.fields.length) {
-      data.fields.forEach((field) => {
-        if (field.hasOwnProperty('label')) {
-          console.log('label');
-          const label = document.createElement('label');
-          label.classList.add('label');
-          label.textContent = field;
+      data.fields.forEach((field, index) => {
+        const wrapInput = document.createElement('p');
+        form.insertAdjacentElement('beforeend', wrapInput);
+        for (let el in field) {
+          if (el === 'label') {
+            const label = document.createElement('label');
+            label.classList.add('label');
+            label.textContent = field[el];
+            label.setAttribute('for', `input${index}`);
+            wrapInput.insertAdjacentElement('beforeend', label);
+          } else if (el === 'input') {
+            const input = document.createElement('input');
+            input.classList.add('input');
+            input.setAttribute('id', `input${index}`);
+            const params = field[el];
+            for (let param in params) {
+              input.setAttribute(param, params[param]);
+            }
+            wrapInput.insertAdjacentElement('beforeend', input);
+          }
         }
-        // for (el in field) {
-        //   if (el === input) {
-        //     console.log('input');
-        //   }
-        //   const element = document.createElement(el);
-        // }
+      });
+    }
+    if (data.references && data.references.length) {
+      const wrapInput = document.createElement('p');
+      form.insertAdjacentElement('beforeend', wrapInput);
+      const label = document.createElement('label');
+      label.classList.add('label');
+      wrapInput.insertAdjacentElement('beforeend', label);
+      const link = document.createElement('a');
+      link.classList.add('form__link');
+      data.references.forEach((reference) => {
+        if (reference.hasOwnProperty('input')) {
+        }
+        for (let el in reference) {
+          if (el === 'input') {
+            const input = document.createElement('input');
+            input.classList.add('input');
+            const params = reference[el];
+            for (let param in params) {
+              input.setAttribute(param, params[param]);
+            }
+            label.insertAdjacentElement('afterbegin', input);
+          } else if (el === 'text without ref') {
+            // label.textContent = reference[el];
+            label.insertAdjacentText('beforeend', reference[el]);
+          } else if (el === 'text') {
+            link.textContent = reference[el];
+            // link.setAttribute('href', '');
+            label.insertAdjacentElement('beforeend', link);
+          } else if (el === 'ref') {
+            link.setAttribute('href', reference[el]);
+          }
+        }
       });
     }
   };
@@ -71,9 +113,7 @@ export function upload(selector, options = {}) {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = (ev) => {
-      console.log(ev.target.result);
       parseData = JSON.parse(ev.target.result);
-      console.log(parseData);
       createForm(parseData, formContainer);
     };
   };

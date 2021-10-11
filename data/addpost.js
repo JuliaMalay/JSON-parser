@@ -45,8 +45,8 @@
       }
     },
     {
-        "text without ref":"View Author Post",
-        "text":"View Author Post",
+        "text without ref":"View Author Post1",
+        "text":"View Author Post2",
         "ref":"viewauthor"
     }
   ],
