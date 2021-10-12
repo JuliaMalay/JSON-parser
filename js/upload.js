@@ -69,41 +69,44 @@ export function upload(selector, options = {}) {
     if (data.references && data.references.length) {
       const wrapInput = document.createElement('p');
       fieldset.insertAdjacentElement('beforeend', wrapInput);
-      const label = document.createElement('label');
-      label.classList.add('label');
-      wrapInput.insertAdjacentElement('beforeend', label);
-      const link = document.createElement('a');
-      link.classList.add('form__link');
+
+      //------------------------------------popytka
       data.references.forEach((reference) => {
-        if (reference.hasOwnProperty('input')) {
-          for (let el in reference) {
-            if (el === 'input') {
-              const input = document.createElement('input');
-              input.classList.add('input');
-              const params = reference[el];
-              for (let param in params) {
-                input.setAttribute(param, params[param]);
-              }
-              label.insertAdjacentElement('afterbegin', input);
-            } else if (el === 'text without ref') {
-              label.insertAdjacentText('beforeend', reference[el]);
-            } else if (el === 'text') {
-              link.textContent = reference[el];
-              label.insertAdjacentElement('beforeend', link);
-            } else if (el === 'ref') {
-              link.setAttribute('href', reference[el]);
-            }
-          }
-        } else {
-          label.remove();
-          const linkLabel = document.createElement('label');
-          linkLabel.classList.add('label');
-          wrapInput.insertAdjacentElement('beforeend', linkLabel);
+        const label = document.createElement('label');
+        label.classList.add('label');
+        if (!reference.hasOwnProperty('input')) {
           const link = document.createElement('a');
           link.classList.add('form__link');
-          for (let el in reference) {
-            console.log(el);
+          if (wrapInput.children.length) {
+            if (reference['text without ref']) {
+              wrapInput.firstChild.insertAdjacentText(
+                'beforeend',
+                reference['text without ref']
+              );
+            }
+            wrapInput.firstChild.insertAdjacentElement('beforeend', link);
+          } else {
+            wrapInput.insertAdjacentElement('beforeend', label);
+            if (reference['text without ref']) {
+              label.insertAdjacentText(
+                'afterbegin',
+                reference['text without ref']
+              );
+            }
+            label.insertAdjacentElement('beforeend', link);
           }
+
+          link.textContent = reference['text'];
+          link.setAttribute('href', reference['ref']);
+        } else {
+          wrapInput.insertAdjacentElement('beforeend', label);
+          const input = document.createElement('input');
+          input.classList.add('input');
+          const params = reference['input'];
+          for (let param in params) {
+            input.setAttribute(param, params[param]);
+          }
+          label.insertAdjacentElement('afterbegin', input);
         }
       });
     }
