@@ -32,16 +32,20 @@ export function upload(selector, options = {}) {
     form.classList.add('form');
     container.insertAdjacentElement('afterbegin', form);
 
+    const fieldset = document.createElement('fieldset');
+    fieldset.classList.add('form');
+    form.insertAdjacentElement('afterbegin', fieldset);
+
     if (data.name) {
-      const title = document.createElement('legend');
-      title.classList.add('form__title');
-      title.textContent = data.name;
-      form.insertAdjacentElement('beforeend', title);
+      const legend = document.createElement('legend');
+      legend.classList.add('form__title');
+      legend.textContent = data.name;
+      fieldset.insertAdjacentElement('afterbegin', legend);
     }
     if (data.fields && data.fields.length) {
       data.fields.forEach((field, index) => {
         const wrapInput = document.createElement('p');
-        form.insertAdjacentElement('beforeend', wrapInput);
+        fieldset.insertAdjacentElement('beforeend', wrapInput);
         for (let el in field) {
           if (el === 'label') {
             const label = document.createElement('label');
@@ -64,7 +68,7 @@ export function upload(selector, options = {}) {
     }
     if (data.references && data.references.length) {
       const wrapInput = document.createElement('p');
-      form.insertAdjacentElement('beforeend', wrapInput);
+      fieldset.insertAdjacentElement('beforeend', wrapInput);
       const label = document.createElement('label');
       label.classList.add('label');
       wrapInput.insertAdjacentElement('beforeend', label);
@@ -72,27 +76,46 @@ export function upload(selector, options = {}) {
       link.classList.add('form__link');
       data.references.forEach((reference) => {
         if (reference.hasOwnProperty('input')) {
-        }
-        for (let el in reference) {
-          if (el === 'input') {
-            const input = document.createElement('input');
-            input.classList.add('input');
-            const params = reference[el];
-            for (let param in params) {
-              input.setAttribute(param, params[param]);
+          for (let el in reference) {
+            if (el === 'input') {
+              const input = document.createElement('input');
+              input.classList.add('input');
+              const params = reference[el];
+              for (let param in params) {
+                input.setAttribute(param, params[param]);
+              }
+              label.insertAdjacentElement('afterbegin', input);
+            } else if (el === 'text without ref') {
+              label.insertAdjacentText('beforeend', reference[el]);
+            } else if (el === 'text') {
+              link.textContent = reference[el];
+              label.insertAdjacentElement('beforeend', link);
+            } else if (el === 'ref') {
+              link.setAttribute('href', reference[el]);
             }
-            label.insertAdjacentElement('afterbegin', input);
-          } else if (el === 'text without ref') {
-            // label.textContent = reference[el];
-            label.insertAdjacentText('beforeend', reference[el]);
-          } else if (el === 'text') {
-            link.textContent = reference[el];
-            // link.setAttribute('href', '');
-            label.insertAdjacentElement('beforeend', link);
-          } else if (el === 'ref') {
-            link.setAttribute('href', reference[el]);
+          }
+        } else {
+          label.remove();
+          const linkLabel = document.createElement('label');
+          linkLabel.classList.add('label');
+          wrapInput.insertAdjacentElement('beforeend', linkLabel);
+          const link = document.createElement('a');
+          link.classList.add('form__link');
+          for (let el in reference) {
+            console.log(el);
           }
         }
+      });
+    }
+    if (data.buttons && data.buttons.length) {
+      data.buttons.forEach((button) => {
+        const wrapButtons = document.createElement('p');
+        fieldset.insertAdjacentElement('beforeend', wrapButtons);
+
+        const formButton = document.createElement('button');
+        formButton.classList.add('form__button');
+        formButton.textContent = button.text;
+        wrapButtons.insertAdjacentElement('beforeend', formButton);
       });
     }
   };
