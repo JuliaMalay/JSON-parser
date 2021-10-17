@@ -26,10 +26,10 @@ body {
   height: 100%;
   line-height: 1;
   font-size: 14px;
-  color: #252b42;
+  color: #666;
   font-weight: 500;
   background-color: #fafafa;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 /* input::-ms-clear {
   display: none;
@@ -146,6 +146,7 @@ input,
 textarea {
   width: auto;
   box-sizing: border-box;
+  min-width: 150px;
 }
 label {
   position: relative;
@@ -223,4 +224,10 @@ p {
 
 .check__input:checked:disabled + .check__box {
   background-color: #9b9b9b;
+}
+
+.form__link {
+  line-height: 1.4;
+  font-weight: 400;
+  color: inherit;
 }

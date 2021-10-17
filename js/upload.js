@@ -39,7 +39,7 @@ export function upload(selector, options = {}) {
     if (data.name) {
       const legend = document.createElement('legend');
       legend.classList.add('form__title');
-      legend.textContent = data.name;
+      legend.textContent = data.name.toUpperCase().split('_').join(' ');
       fieldset.insertAdjacentElement('afterbegin', legend);
     }
     if (data.fields && data.fields.length) {
@@ -47,22 +47,58 @@ export function upload(selector, options = {}) {
         const formItem = document.createElement('p');
         formItem.classList.add('form__item');
         fieldset.insertAdjacentElement('beforeend', formItem);
+        const labelInput = document.createElement('label');
+        labelInput.classList.add('label__input');
+        formItem.insertAdjacentElement('beforeend', labelInput);
         for (let el in field) {
           if (el === 'label') {
-            const labelInput = document.createElement('label');
-            labelInput.classList.add('label__input');
-            labelInput.textContent = field[el];
+            labelInput.insertAdjacentText('beforeend', field[el]);
             labelInput.setAttribute('for', `input${index}`);
-            formItem.insertAdjacentElement('beforeend', labelInput);
           } else if (el === 'input') {
-            const input = document.createElement('input');
-            input.classList.add('input');
-            input.setAttribute('id', `input${index}`);
+            const input1 = document.createElement('input');
+            input1.classList.add('input');
+            input1.setAttribute('id', `input${index}`);
+            labelInput.insertAdjacentElement('beforeend', input1);
             const params = field[el];
             for (let param in params) {
-              input.setAttribute(param, params[param]);
+              input1.setAttribute(param, params[param]);
+              if (params[param] === 'checkbox') {
+                labelInput.classList.add('check', 'option');
+                input1.classList.add('check__input');
+                const checkbox = document.createElement('span');
+                checkbox.classList.add('check__box');
+                labelInput.insertAdjacentElement('beforeend', checkbox);
+                console.log('TYT');
+              }
+              if (params[param] === 'technology') {
+                console.log('hello');
+              }
+              if (params[param] === 'color') {
+                const datalist = document.createElement('datalist');
+                datalist.setAttribute('id', 'colors');
+                input1.setAttribute('list', 'colors');
+                labelInput.insertAdjacentElement('beforeend', datalist);
+                params['colors'].forEach((color) => {
+                  const option = document.createElement('option');
+                  option.insertAdjacentText('afterbegin', color);
+                  datalist.insertAdjacentElement('beforeend', option);
+                });
+              }
             }
-            formItem.insertAdjacentElement('beforeend', input);
+
+            //------------------------------------------------------------------------
+            // label.classList.add('check', 'option');
+            // formItem.insertAdjacentElement('beforeend', label);
+            // const input = document.createElement('input');
+            // input.classList.add('check__input');
+            // const params = reference['input'];
+            // for (let param in params) {
+            //   input.setAttribute(param, params[param]);
+            // }
+            // label.insertAdjacentElement('afterbegin', input);
+            // const checkbox = document.createElement('span');
+            // checkbox.classList.add('check__box');
+            // label.insertAdjacentElement('beforeend', checkbox);
           }
         }
       });
