@@ -91,7 +91,7 @@
             "label":"Расскажите немного о себе",
             "input":{
                 "type":"textarea",
-                "required:":true
+                "required":true
             }
         }
     ],

@@ -8,18 +8,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="wrapper">
-      <div class="main__container _container">
+      <div class="main _container">
         <h1 class="main__title">JSON parse</h1>
-        <input class="input__upload" type="file" name="upload" id="upload" />
+        <input
+          class="input main__input"
+          type="file"
+          name="upload"
+          id="upload"
+        />
       </div>
     </div>
+
     <script src="js/index.js"></script>
     <script type="module">
       import {upload} from './js/upload.js';

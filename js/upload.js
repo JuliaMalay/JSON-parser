@@ -1,30 +1,30 @@
 export function upload(selector, options = {}) {
-  const input = document.querySelector(selector);
+  const inputUpload = document.querySelector(selector);
 
-  const open = document.createElement('button');
-  open.classList.add('btn');
-  open.textContent = 'Открыть';
+  const buttonOpen = document.createElement('button');
+  buttonOpen.classList.add('button', 'main__button', 'button_primary');
+  buttonOpen.textContent = 'Открыть';
 
-  const remove = document.createElement('button');
-  remove.classList.add('btn');
-  remove.textContent = 'Сбросить';
+  const buttonRemove = document.createElement('button');
+  buttonRemove.classList.add('button', 'main__button');
+  buttonRemove.textContent = 'Сбросить';
 
   const formContainer = document.createElement('div');
-  formContainer.classList.add('form__container');
+  formContainer.classList.add('form__wrapper');
 
   if (options.accept && Array.isArray(options.accept)) {
-    input.setAttribute('accept', options.accept.join(','));
+    inputUpload.setAttribute('accept', options.accept.join(','));
   }
 
-  input.insertAdjacentElement('afterend', formContainer);
-  input.insertAdjacentElement('afterend', remove);
-  input.insertAdjacentElement('afterend', open);
+  inputUpload.insertAdjacentElement('afterend', formContainer);
+  inputUpload.insertAdjacentElement('afterend', buttonRemove);
+  inputUpload.insertAdjacentElement('afterend', buttonOpen);
 
-  const triggerInput = () => input.click();
-  open.addEventListener('click', triggerInput);
+  const triggerInput = () => inputUpload.click();
+  buttonOpen.addEventListener('click', triggerInput);
 
   const removeForm = () => (formContainer.innerHTML = ``);
-  remove.addEventListener('click', removeForm);
+  buttonRemove.addEventListener('click', removeForm);
   let parseData = {};
 
   const createForm = (data, container) => {
@@ -33,7 +33,7 @@ export function upload(selector, options = {}) {
     container.insertAdjacentElement('afterbegin', form);
 
     const fieldset = document.createElement('fieldset');
-    fieldset.classList.add('form');
+    fieldset.classList.add('form__fieldset');
     form.insertAdjacentElement('afterbegin', fieldset);
 
     if (data.name) {
@@ -44,15 +44,16 @@ export function upload(selector, options = {}) {
     }
     if (data.fields && data.fields.length) {
       data.fields.forEach((field, index) => {
-        const wrapInput = document.createElement('p');
-        fieldset.insertAdjacentElement('beforeend', wrapInput);
+        const formItem = document.createElement('p');
+        formItem.classList.add('form__item');
+        fieldset.insertAdjacentElement('beforeend', formItem);
         for (let el in field) {
           if (el === 'label') {
-            const label = document.createElement('label');
-            label.classList.add('label');
-            label.textContent = field[el];
-            label.setAttribute('for', `input${index}`);
-            wrapInput.insertAdjacentElement('beforeend', label);
+            const labelInput = document.createElement('label');
+            labelInput.classList.add('label__input');
+            labelInput.textContent = field[el];
+            labelInput.setAttribute('for', `input${index}`);
+            formItem.insertAdjacentElement('beforeend', labelInput);
           } else if (el === 'input') {
             const input = document.createElement('input');
             input.classList.add('input');
@@ -61,32 +62,33 @@ export function upload(selector, options = {}) {
             for (let param in params) {
               input.setAttribute(param, params[param]);
             }
-            wrapInput.insertAdjacentElement('beforeend', input);
+            formItem.insertAdjacentElement('beforeend', input);
           }
         }
       });
     }
     if (data.references && data.references.length) {
-      const wrapInput = document.createElement('p');
-      fieldset.insertAdjacentElement('beforeend', wrapInput);
+      const formItem = document.createElement('p');
+      formItem.classList.add('form__item');
+      fieldset.insertAdjacentElement('beforeend', formItem);
 
-      //------------------------------------popytka
       data.references.forEach((reference) => {
         const label = document.createElement('label');
-        label.classList.add('label');
+
         if (!reference.hasOwnProperty('input')) {
           const link = document.createElement('a');
           link.classList.add('form__link');
-          if (wrapInput.children.length) {
+          if (formItem.children.length) {
             if (reference['text without ref']) {
-              wrapInput.firstChild.insertAdjacentText(
+              formItem.firstChild.insertAdjacentText(
                 'beforeend',
                 reference['text without ref']
               );
             }
-            wrapInput.firstChild.insertAdjacentElement('beforeend', link);
+            formItem.firstChild.insertAdjacentElement('beforeend', link);
           } else {
-            wrapInput.insertAdjacentElement('beforeend', label);
+            label.classList.add('label');
+            formItem.insertAdjacentElement('beforeend', label);
             if (reference['text without ref']) {
               label.insertAdjacentText(
                 'afterbegin',
@@ -99,26 +101,31 @@ export function upload(selector, options = {}) {
           link.textContent = reference['text'];
           link.setAttribute('href', reference['ref']);
         } else {
-          wrapInput.insertAdjacentElement('beforeend', label);
+          label.classList.add('check', 'option');
+          formItem.insertAdjacentElement('beforeend', label);
           const input = document.createElement('input');
-          input.classList.add('input');
+          input.classList.add('check__input');
           const params = reference['input'];
           for (let param in params) {
             input.setAttribute(param, params[param]);
           }
           label.insertAdjacentElement('afterbegin', input);
+          const checkbox = document.createElement('span');
+          checkbox.classList.add('check__box');
+          label.insertAdjacentElement('beforeend', checkbox);
         }
       });
     }
     if (data.buttons && data.buttons.length) {
       data.buttons.forEach((button) => {
-        const wrapButtons = document.createElement('p');
-        fieldset.insertAdjacentElement('beforeend', wrapButtons);
+        const formItem = document.createElement('p');
+        formItem.classList.add('form__item');
+        fieldset.insertAdjacentElement('beforeend', formItem);
 
         const formButton = document.createElement('button');
         formButton.classList.add('form__button');
         formButton.textContent = button.text;
-        wrapButtons.insertAdjacentElement('beforeend', formButton);
+        formItem.insertAdjacentElement('beforeend', formButton);
       });
     }
   };
@@ -129,7 +136,7 @@ export function upload(selector, options = {}) {
       return;
     }
     const files = Array.from(event.target.files);
-    let file = input.files[0];
+    let file = inputUpload.files[0];
     if (
       !file.type.match('application/json') &&
       !file.type.match('text/javascript')
@@ -144,5 +151,5 @@ export function upload(selector, options = {}) {
     };
   };
 
-  input.addEventListener('change', changeHandler);
+  inputUpload.addEventListener('change', changeHandler);
 }

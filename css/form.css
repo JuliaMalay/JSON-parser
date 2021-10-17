@@ -1,0 +1,75 @@
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+}
+input,
+textarea,
+select,
+button {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+input {
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type='checkbox'] {
+  position: relative;
+  width: 1em;
+  height: 1em;
+  border: 1px solid gray;
+  /* Adjusts the position of the checkboxes on the text baseline */
+  vertical-align: -2px;
+  /* Set here so that Windows' High-Contrast Mode can override */
+  color: green;
+}
+
+input[type='checkbox']::before {
+  content: '✔';
+  position: absolute;
+  font-size: 1.2em;
+  right: -1px;
+  top: -0.3em;
+  visibility: hidden;
+}
+
+input[type='checkbox']:checked::before {
+  /* Use `visibility` instead of `display` to avoid recalculating layout */
+  visibility: visible;
+}
+
+input[type='checkbox']:disabled {
+  border-color: black;
+  background: #ddd;
+  color: gray;
+}
+input[type='color'] {
+  border: 0;
+  padding: 0;
+  width: 150px;
+}
+input[type='file'] {
+  height: 0;
+  padding: 0;
+  opacity: 0;
+}
+label[for='file'] {
+  box-shadow: 1px 1px 3px #ccc;
+  background: linear-gradient(to bottom, #eee, #ccc);
+  border: 1px solid rgb(169, 169, 169);
+  border-radius: 5px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+label[for='file']:hover {
+  background: linear-gradient(to bottom, #fff, #ddd);
+}
+
+label[for='file']:active {
+  box-shadow: inset 1px 1px 3px #ccc;
+}
