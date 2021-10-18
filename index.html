@@ -17,21 +17,27 @@
     <div class="wrapper">
       <div class="main _container">
         <h1 class="main__title">JSON parse</h1>
-        <input
-          class="input main__input"
-          type="file"
-          name="upload"
-          id="upload"
-        />
+
+        <label for="upload"
+          >Choose a file
+          <!-- <span></span> -->
+          <input
+            type="file"
+            name="file"
+            id="upload"
+            class="inputfile"
+            data-multiple-caption="{count} files selected"
+            multiple
+        /></label>
       </div>
     </div>
 
     <script src="js/index.js"></script>
-    <script type="module">
+    <!-- <script type="module">
       import {upload} from './js/upload.js';
       upload('#upload', {
         accept: ['.js', '.json'],
       });
-    </script>
+    </script> -->
   </body>
 </html>
