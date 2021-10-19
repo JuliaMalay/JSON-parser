@@ -4,23 +4,12 @@ function upload(selector, options = {}) {
   const inputUpload = document.querySelector(selector);
   let label = inputUpload.parentNode,
     labelVal = label.innerHTML;
-  //   let span = inputUpload.previousElementSibling;
+  const formContainer = document.createElement('div');
+  formContainer.classList.add('form__wrapper');
+
   let span = document.createElement('span');
+  span.innerText = `Choose a file...`;
   inputUpload.insertAdjacentElement('afterend', span);
-  //   const buttonOpen = document.createElement('button');
-  //   buttonOpen.classList.add('button', 'main__button', 'button_primary');
-  //   buttonOpen.textContent = 'Открыть';
-
-  //   const buttonRemove = document.createElement('button');
-  //   buttonRemove.classList.add('button', 'main__button');
-  //   buttonRemove.textContent = 'Сбросить';
-
-  //   const formContainer = document.createElement('div');
-  //   formContainer.classList.add('form__wrapper');
-  //   inputUpload.insertAdjacentElement('afterend', formContainer);
-
-  // inputUpload.insertAdjacentElement('afterend', buttonRemove);
-  // inputUpload.insertAdjacentElement('afterend', buttonOpen);
 
   if (options.multi) {
     inputUpload.setAttribute('multiple', true);
@@ -29,25 +18,13 @@ function upload(selector, options = {}) {
   if (options.accept && Array.isArray(options.accept)) {
     inputUpload.setAttribute('accept', options.accept.join(','));
   }
-
-  //   const removeForm = () => (formContainer.innerHTML = ``);
-  //   buttonRemove.addEventListener('click', removeForm);
-  //   let parseData = {};
-
   const changeHandler = (event) => {
     if (!event.target.files.length) {
       return;
     }
-    // files.forEach((file) => {});
 
     const files = Array.from(event.target.files);
     let file = inputUpload.files[0];
-    // if (
-    //   !file.type.match('application/json') &&
-    //   !file.type.match('text/javascript')
-    // ) {
-    //   return;
-    // }
     var fileName = '';
     if (event.target.files && event.target.files.length > 1) {
       fileName = `${event.target.files.length} files selected`;
@@ -60,9 +37,7 @@ function upload(selector, options = {}) {
       console.log(fileName);
     } else span.textContent = 'no files selected';
     if (options.json) {
-      const formContainer = document.createElement('div');
-      formContainer.classList.add('form__wrapper');
-
+      formContainer.innerHTML = '';
       label.insertAdjacentElement('afterend', formContainer);
       const reader = new FileReader();
       reader.readAsText(file);
@@ -82,28 +57,6 @@ upload('#upload', {
   json: true,
 });
 
-// const inputs = document.querySelectorAll('.inputfile');
-// Array.prototype.forEach.call(inputs, function (input) {
-//   console.log('start');
-
-//   var label = input.nextElementSibling,
-//     labelVal = label.innerHTML;
-
-//   input.addEventListener('change', function (e) {
-//     console.log('listen');
-
-//     var fileName = '';
-//     if (this.files) {
-//       fileName = e.target.value.split('\\').pop();
-//     }
-
-//     if (fileName) {
-//       label.querySelector('span').innerHTML = fileName;
-//     } else {
-//       label.innerHTML = labelVal;
-//     }
-//   });
-// });
 const createForm = (data, container) => {
   const form = document.createElement('form');
   form.classList.add('form');
@@ -138,6 +91,15 @@ const createForm = (data, container) => {
           labelInput.insertAdjacentElement('beforeend', input1);
           const params = field[el];
           for (let param in params) {
+            console.log(
+              'param:',
+              param,
+              'params[param]:',
+              params[param],
+              'type: ',
+              typeof params[param]
+            );
+
             input1.setAttribute(param, params[param]);
             if (params[param] === 'checkbox') {
               labelInput.classList.add('check', 'option');
@@ -173,20 +135,6 @@ const createForm = (data, container) => {
               });
             }
           }
-
-          //------------------------------------------------------------------------
-          // label.classList.add('check', 'option');
-          // formItem.insertAdjacentElement('beforeend', label);
-          // const input = document.createElement('input');
-          // input.classList.add('check__input');
-          // const params = reference['input'];
-          // for (let param in params) {
-          //   input.setAttribute(param, params[param]);
-          // }
-          // label.insertAdjacentElement('afterbegin', input);
-          // const checkbox = document.createElement('span');
-          // checkbox.classList.add('check__box');
-          // label.insertAdjacentElement('beforeend', checkbox);
         }
       }
     });
@@ -253,3 +201,6 @@ const createForm = (data, container) => {
     });
   }
 };
+var selector = document.getElementById('mask');
+var im = new Inputmask('99-9999999');
+im.mask(selector);

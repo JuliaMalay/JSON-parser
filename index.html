@@ -19,8 +19,7 @@
         <h1 class="main__title">JSON parse</h1>
 
         <label for="upload"
-          >Choose a file
-          <!-- <span></span> -->
+          >Open
           <input
             type="file"
             name="file"
@@ -30,14 +29,9 @@
             multiple
         /></label>
       </div>
+      <input type="number" class="mask" id="mask" />
     </div>
-
+    <script src="dist/inputmask.js"></script>
     <script src="js/index.js"></script>
-    <!-- <script type="module">
-      import {upload} from './js/upload.js';
-      upload('#upload', {
-        accept: ['.js', '.json'],
-      });
-    </script> -->
   </body>
 </html>
