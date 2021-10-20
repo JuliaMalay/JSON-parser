@@ -7,6 +7,7 @@ function upload(selector, options = {}) {
 
   let span = document.createElement('span');
   span.innerText = `Choose a file...`;
+  span.classList.add('file__name');
   inputUpload.insertAdjacentElement('afterend', span);
 
   if (options.multi) {
@@ -73,19 +74,33 @@ const createForm = (data, container) => {
         formItem.classList.add('form__item');
         fieldset.insertAdjacentElement('beforeend', formItem);
         const labelInput = document.createElement('label');
-        labelInput.classList.add('label__input');
+        labelInput.classList.add('form__label');
         formItem.insertAdjacentElement('beforeend', labelInput);
         Object.entries(value).forEach(([element, value]) => {
           if (element === 'label') {
             labelInput.insertAdjacentText('beforeend', value);
             labelInput.setAttribute('for', `input${index}`);
           } else if (element === 'input') {
-            const input1 = document.createElement('input');
-            input1.classList.add('input');
+            let input1;
+            if (value['type'] === 'technology') {
+              input1 = document.createElement('select');
+            } else {
+              input1 = document.createElement('input');
+            }
+            input1.classList.add('form__input');
             input1.setAttribute('id', `input${index}`);
             labelInput.insertAdjacentElement('beforeend', input1);
+            const attributes = [
+              'type',
+              'required',
+              'checked',
+              'placeholder',
+              'multiple',
+            ];
             Object.entries(value).forEach(([param, value]) => {
-              input1.setAttribute(param, value);
+              if (attributes.includes(param)) {
+                input1.setAttribute(param, value);
+              }
             });
             if (value['type'] === 'checkbox') {
               labelInput.classList.add('check', 'option');
@@ -109,7 +124,7 @@ const createForm = (data, container) => {
                 format = value['filetype'].map((f) => '.' + f);
               }
 
-              input1.classList.add('inputfile');
+              input1.classList.add('form__input_file');
               upload(`#input${index}`, {
                 multi: value['multiple'],
                 accept: format,
@@ -120,48 +135,59 @@ const createForm = (data, container) => {
               let selector = document.getElementById(`input${index}`);
               let im = new Inputmask(value['mask']);
               im.mask(selector);
+            } else if (value['type'] === 'technology') {
+              value['technologies'].forEach((tech) => {
+                let option = document.createElement('option');
+                option.textContent = tech;
+                input1.insertAdjacentElement('beforeend', option);
+                // if(value['multiply']){
+                //   input1.setAttribute('multiply')
+                // }
+              });
             }
           }
         });
       });
     }
     if (key === 'references' && value.length) {
+      console.log('in references');
+
       const formItem = document.createElement('p');
       formItem.classList.add('form__item');
       fieldset.insertAdjacentElement('beforeend', formItem);
-      Object.entries(data).forEach(([reference, value]) => {
+      Object.entries(value).forEach(([reference, value]) => {
+        console.log('in reference: ', value);
         const label = document.createElement('label');
-        if (!reference.hasOwnProperty('input')) {
+        if (!value.hasOwnProperty('input')) {
+          console.log('no have input');
+
           const link = document.createElement('a');
           link.classList.add('form__link');
           if (formItem.children.length) {
-            if (reference['text without ref']) {
+            if (value['text without ref']) {
               formItem.firstChild.insertAdjacentText(
                 'beforeend',
-                reference['text without ref']
+                value['text without ref']
               );
             }
             formItem.firstChild.insertAdjacentElement('beforeend', link);
           } else {
             label.classList.add('label');
             formItem.insertAdjacentElement('beforeend', label);
-            if (reference['text without ref']) {
-              label.insertAdjacentText(
-                'afterbegin',
-                reference['text without ref']
-              );
+            if (value['text without ref']) {
+              label.insertAdjacentText('afterbegin', value['text without ref']);
             }
             label.insertAdjacentElement('beforeend', link);
           }
 
-          link.textContent = reference['text'];
-          link.setAttribute('href', reference['ref']);
+          link.textContent = value['text'];
+          link.setAttribute('href', value['ref']);
         } else {
           label.classList.add('check', 'option');
           formItem.insertAdjacentElement('beforeend', label);
           const input = document.createElement('input');
           input.classList.add('check__input');
-          const params = reference['input'];
+          const params = value['input'];
           for (let param in params) {
             input.setAttribute(param, params[param]);
           }
@@ -173,11 +199,10 @@ const createForm = (data, container) => {
       });
     }
     if (key === 'buttons' && value.length) {
+      const formItem = document.createElement('p');
+      formItem.classList.add('form__buttons');
+      fieldset.insertAdjacentElement('beforeend', formItem);
       value.forEach((button) => {
-        const formItem = document.createElement('p');
-        formItem.classList.add('form__item');
-        fieldset.insertAdjacentElement('beforeend', formItem);
-
         const formButton = document.createElement('button');
         formButton.classList.add('form__button');
         formButton.textContent = button.text;
