@@ -238,7 +238,8 @@ input[type='date'] {
 }
 .check__input:checked + .check__box {
   background-color: #c87ef0;
-  background-image: url(./images/check.svg);
+  /* background-image: url(./images/check.svg); */
+  background-image: url(../images/check.svg);
 }
 .check__input:focus + .check__box {
   box-shadow: 0 0 0 0.1em #c87ef0, 0 0 0 0.2em #76c3f5;
